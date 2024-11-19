@@ -1,23 +1,16 @@
-import React from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App";
-import { ThirdwebProvider } from "@thirdweb-dev/react";
-import "./styles/globals.css";
+import "./index.css";
+import App from "./App.jsx";
+import { ThirdwebProvider } from "thirdweb/react";
+import { BrowserRouter } from "react-router-dom";
 
-// This is the chain your dApp will work on.
-// Change this to the chain your app is built for.
-// You can also import additional chains from `@thirdweb-dev/chains` and pass them directly.
-const activeChain = "ethereum";
-
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(
-  <React.StrictMode>
-    <ThirdwebProvider
-      clientId={import.meta.env.VITE_TEMPLATE_CLIENT_ID}
-      activeChain={activeChain}
-    >
-      <App />
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <ThirdwebProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ThirdwebProvider>
-  </React.StrictMode>
+  </StrictMode>
 );
