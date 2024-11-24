@@ -73,8 +73,8 @@ const CreateCampaign = () => {
         </div>
 
         <FormField
-          labelName="Story *"
-          placeholder="Write your story"
+          labelName="Description *"
+          placeholder="State what the crowdfunding ig going to acheive"
           isTextArea
           value={form.description}
           handleChange={(e) => handleFormFieldChange("description", e)}
