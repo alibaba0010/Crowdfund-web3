@@ -3,14 +3,15 @@ import { useContext, createContext } from "react";
 import {
   useAddress,
   useContract,
-  useMetamask,
   useContractWrite,
+  useConnect,
+  metamaskWallet,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
 import { EditionMetadataWithOwnerOutputSchema } from "@thirdweb-dev/sdk";
 
 const StateContext = createContext();
-
+const metamaskConfig = metamaskWallet();
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
     "0x51AFcbD12376434B68dD826802049a9634cb2364"
@@ -19,22 +20,24 @@ export const StateContextProvider = ({ children }) => {
     contract,
     "createCampaign"
   );
-
+  // const wallet = await connect(metamaskConfig, connectOptions);
   const address = useAddress();
-  const connect = useMetamask();
+  const connect = useConnect();
 
   const publishCampaign = async (form) => {
+    console.log("Form: " + form);
     try {
-      // const data = await createCampaign({
-      // 	args: [
-      // 		address, // owner
-      // 		form.title, // title
-      // 		form.description, // description
-      // 		form.target,
-      // 		new Date(form.deadline).getTime(), // deadline,
-      // 		form.image,
-      // 	],
-      // });
+      const wallet = await connect(metamaskConfig, connectOptions);
+      console.log("connected to ", wallet);
+      const data = await createCampaign({
+        args: [
+          address, // owner
+          form.target,
+          form.title, // title
+          form.description, // description
+          new Date(form.deadline).getTime(), // deadline,
+        ],
+      });
 
       console.log("contract call success", data);
     } catch (error) {
