@@ -20,3 +20,5 @@ export const calculateBarPercentage = (goal, raisedAmount) => {
 //   img.onload = () => callback(true);
 //   img.onerror = () => callback(false);
 // };
+export const activeChain = "ethereum";
+export const clientId = import.meta.env.THIRD_CLIENT_ID;
