@@ -1,18 +1,5 @@
-import { useContext, createContext } from "react";
-
-import {
-  useAddress,
-  useContract,
-  useContractWrite,
-  useConnect,
-  metamaskWallet,
-} from "@thirdweb-dev/react";
-import { ethers } from "ethers";
-import { EditionMetadataWithOwnerOutputSchema } from "@thirdweb-dev/sdk";
-
-const StateContext = createContext();
-const metamaskConfig = metamaskWallet();
-export const StateContextProvider = ({ children }) => {
+const StateContextProvider = ({ children }) => {
+  const metamaskConfig = metamaskWallet();
   const { contract } = useContract(
     "0x51AFcbD12376434B68dD826802049a9634cb2364"
   );
@@ -20,7 +7,6 @@ export const StateContextProvider = ({ children }) => {
     contract,
     "createCampaign"
   );
-  const address = useAddress();
   const connect = useConnect();
 
   const publishCampaign = async (form) => {
@@ -105,5 +91,3 @@ export const StateContextProvider = ({ children }) => {
     </StateContext.Provider>
   );
 };
-
-export const useStateContext = () => useContext(StateContext);
