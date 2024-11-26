@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-} from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { createWallet, injectedProvider } from "thirdweb/wallets";
 import { useConnect, useActiveWallet } from "thirdweb/react";
@@ -15,7 +9,7 @@ const StateContext = createContext();
 const client = createThirdwebClient({ clientId });
 const StateContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [wallet, setWallet] = useState(null);
+  const [wallet, setWallet] = useState("");
 
   const connectWallet = async () => {
     const metamaskProvider = injectedProvider("io.metamask");
@@ -33,6 +27,9 @@ const StateContextProvider = ({ children }) => {
     setWallet(account.address);
     return account;
   };
+  useEffect(() => {
+    connectWallet();
+  }, []);
 
   const publishCampaign = async (form) => {
     setLoading(true);
@@ -62,7 +59,6 @@ const StateContextProvider = ({ children }) => {
   const contextValue = {
     loading,
     address: wallet,
-    // address: "0x"
     connect: connectWallet,
     createCampaign: publishCampaign,
   };
