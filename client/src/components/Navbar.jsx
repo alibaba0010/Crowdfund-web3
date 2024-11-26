@@ -5,15 +5,13 @@ import { useStateContext } from "../context";
 import { CustomButton } from ".";
 import { logo, menu, search, thirdweb } from "../assets";
 import { navlinks } from "../constants";
-import { ConnectWallet } from "thirdweb/react";
-
+import { clientId } from "../utils";
 const Navbar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
-  const { connect } = useStateContext();
-  const address = undefined;
+  const { address, connect } = useStateContext();
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
@@ -40,12 +38,9 @@ const Navbar = () => {
           styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
           handleClick={() => {
             if (address) navigate("create-campaign");
-            else {
-              <ConnectWallet />;
-            }
+            else connect();
           }}
         />
-
         <Link to="/profile">
           <div className="w-[52px] h-[52px] rounded-full bg-[#2c2f32] flex justify-center items-center cursor-pointer">
             <img
@@ -117,9 +112,7 @@ const Navbar = () => {
               styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
               handleClick={() => {
                 if (address) navigate("create-campaign");
-                else {
-                  <ConnectWallet />;
-                }
+                else connect();
               }}
             />
           </div>

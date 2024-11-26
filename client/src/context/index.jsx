@@ -16,40 +16,33 @@ const client = createThirdwebClient({ clientId });
 const StateContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState(null);
-  const activeWallet = useActiveWallet();
-  console.log("Active wallet: " + JSON.stringify(activeWallet));
-  const { connect } = useConnect();
 
-  const connectWallet = useCallback(async () => {
-    setLoading(true);
-    try {
-      const connectedWallet = await connect(async () => {
-        const newWallet = createWallet("io.metamask");
-        // connect wallet
-        const result = await newWallet.connect(client);
-        console.log("Result: " + result);
-        // return the wallet
-        return newWallet;
-      });
-      console.log("Connected Wallet", connectedWallet);
-      setWallet(connectedWallet);
-      console.log("Connected to wallet:", connectedWallet);
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
-    } finally {
-      setLoading(false);
+  const connectWallet = async () => {
+    const metamaskProvider = injectedProvider("io.metamask");
+    console.log("Connecting wallet: ", metamaskProvider);
+    if (!metamaskProvider) {
+      alert("Please install the metamsk extension");
+      return;
     }
-  }, [connect]);
+    const metamaskWallet = createWallet("io.metamask");
+
+    const account = await metamaskWallet.connect({
+      client,
+    });
+    console.log("Account: ", account);
+    setWallet(account.address);
+    return account;
+  };
 
   const publishCampaign = async (form) => {
     setLoading(true);
     try {
-      if (!activeWallet) {
+      if (!wallet) {
         throw new Error("No wallet connected");
       }
 
       // Assuming you have a contract instance available
-      const data = await activeWallet.contract.call("createCampaign", [
+      const data = await wallet.contract.call("createCampaign", [
         form.target,
         form.title,
         form.description,
@@ -68,7 +61,7 @@ const StateContextProvider = ({ children }) => {
 
   const contextValue = {
     loading,
-    // address: activeWallet,
+    address: wallet,
     // address: "0x"
     connect: connectWallet,
     createCampaign: publishCampaign,
