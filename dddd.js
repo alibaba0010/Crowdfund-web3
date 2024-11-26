@@ -7,28 +7,6 @@ const StateContextProvider = ({ children }) => {
     contract,
     "createCampaign"
   );
-  const connect = useConnect();
-
-  const publishCampaign = async (form) => {
-    console.log("Form: " + form);
-    try {
-      const wallet = await connect(metamaskConfig);
-      console.log("connected to ", wallet);
-      const data = await createCampaign({
-        args: [
-          address, // owner
-          form.target,
-          form.title, // title
-          form.description, // description
-          new Date(form.deadline).getTime(), // deadline,
-        ],
-      });
-
-      console.log("contract call success", data);
-    } catch (error) {
-      console.log("contract call failure", error);
-    }
-  };
 
   const getCampaigns = async () => {
     // const campaigns = await contract.call('getCampaigns');

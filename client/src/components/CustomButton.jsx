@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from "prop-types";
 
 const CustomButton = ({ btnType, title, handleClick, styles }) => {
   return (
@@ -9,7 +9,14 @@ const CustomButton = ({ btnType, title, handleClick, styles }) => {
     >
       {title}
     </button>
-  )
-}
+  );
+};
 
-export default CustomButton
+CustomButton.propTypes = {
+  btnType: PropTypes.string,
+  title: PropTypes.string,
+  handleClick: PropTypes.func,
+  styles: PropTypes.string,
+};
+
+export default CustomButton;
