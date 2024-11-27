@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { useStateContext } from "../context";
 import { money } from "../assets";
 import { CustomButton, FormField, Loader } from "../components";
+import { TransactionButton } from "thirdweb/react";
 // import { checkIfImage } from "../utils";
 
 const CreateCampaign = () => {
@@ -27,11 +28,14 @@ const CreateCampaign = () => {
     e.preventDefault();
 
     setIsLoading(true);
-    const result = await createCampaign({
-      ...form,
-      target: ethers.utils.parseUnits(form.target, 18),
-    });
-    console.log("Result in create campaign: " + JSON.stringify(result));
+    <TransactionButton
+      transaction={() => {
+        createCampaign({
+          ...form,
+          target: ethers.utils.parseUnits(form.target, 18),
+        });
+      }}
+    ></TransactionButton>;
     setIsLoading(false);
     navigate("/");
   };

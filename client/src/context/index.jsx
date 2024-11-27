@@ -47,7 +47,7 @@ const StateContextProvider = ({ children }) => {
     connectWallet();
   }, []);
 
-  const publishCampaign = async (form) => {
+  const publishCampaign = (form) => {
     console.log("Form : ", form);
 
     setLoading(true);
