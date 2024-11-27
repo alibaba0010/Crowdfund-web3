@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Sidebar, Navbar } from "./components";
-import { Home, Profile, CreateCampaign, CampaignDetails } from "./pages";
+import { Profile, CreateCampaign, CampaignDetails } from "./pages";
+import { Home } from "./components/ConnectEmbed";
 import "./App.css";
 
 function App() {

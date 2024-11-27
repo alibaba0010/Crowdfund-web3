@@ -24,14 +24,14 @@ const CreateCampaign = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("Form : ", form);
     e.preventDefault();
 
     setIsLoading(true);
-    await createCampaign({
+    const result = await createCampaign({
       ...form,
       target: ethers.utils.parseUnits(form.target, 18),
     });
+    console.log("Result in create campaign: " + JSON.stringify(result));
     setIsLoading(false);
     navigate("/");
   };

@@ -5,9 +5,9 @@ import {
   createThirdwebClient,
   prepareContractCall,
   getContract,
-  sendTransaction,
 } from "thirdweb";
-import { clientId } from "../utils";
+import { useSendTransaction } from "thirdweb/react";
+import { clientId, contractABI } from "../utils";
 import { sepolia } from "thirdweb/chains";
 const StateContext = createContext();
 
@@ -16,15 +16,14 @@ const client = createThirdwebClient({ clientId });
 const StateContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [wallet, setWallet] = useState("");
+  // const { mutate: sendTransaction } = useSendTransaction();
 
   // get a contract
   const contract = getContract({
-    // the client you have created via `createThirdwebClient()`
     client,
-    // the chain the contract is deployed on
     chain: sepolia,
-    // the contract's address
     address: "0x51AFcbD12376434B68dD826802049a9634cb2364",
+    abi: contractABI,
   });
 
   const connectWallet = async () => {
@@ -49,17 +48,17 @@ const StateContextProvider = ({ children }) => {
   }, []);
 
   const publishCampaign = async (form) => {
+    console.log("Form : ", form);
+
     setLoading(true);
     try {
       if (!wallet) {
         throw new Error("No wallet connected");
       }
 
-      // Assuming you have a contract instance available
       const transaction = prepareContractCall({
         contract,
-        method:
-          "function createCampaign(uint256 targetAmount, uint256 deadline, string title, string description) payable returns (uint256)",
+        method: "createCampaign",
         params: [
           form.target,
           new Date(form.deadline).getTime(),
@@ -67,13 +66,8 @@ const StateContextProvider = ({ children }) => {
           form.description,
         ],
       });
-      const { transactionHash } = await sendTransaction({
-        transaction,
-        account,
-      });
-      console.log("Data: ", transactionHash);
 
-      console.log("Campaign created successfully:", transactionHash);
+      console.log("Campaign created successfully:", transaction);
       return transaction;
     } catch (error) {
       console.error("Failed to publish campaign:", error);

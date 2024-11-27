@@ -1,3 +1,4 @@
+import abi from "./Crowdfund.json";
 export const daysLeft = (deadline) => {
   const difference = new Date(deadline).getTime() - Date.now();
   const remainingDays = difference / (1000 * 3600 * 24);
@@ -20,5 +21,6 @@ export const calculateBarPercentage = (goal, raisedAmount) => {
 //   img.onload = () => callback(true);
 //   img.onerror = () => callback(false);
 // };
-export const activeChain = "ethereum";
+export const activeChain = "sepolia";
 export const clientId = import.meta.env.VITE_HELLO;
+export const contractABI = abi.abi;
